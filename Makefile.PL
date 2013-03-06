@@ -17,7 +17,7 @@ my %WriteMakefileArgs = (
   },
   "DISTNAME" => "App-GitHubPullRequest",
   "EXE_FILES" => [
-    "bin/pr"
+    "bin/prq"
   ],
   "LICENSE" => "perl",
   "NAME" => "App::GitHubPullRequest",
@@ -29,7 +29,7 @@ my %WriteMakefileArgs = (
     "strict" => 0,
     "warnings" => 0
   },
-  "VERSION" => "0.0.3",
+  "VERSION" => "0.0.4",
   "test" => {
     "TESTS" => "t/*.t"
   }

@@ -4,7 +4,7 @@ use feature qw(say);
 
 package App::GitHubPullRequest;
 {
-  $App::GitHubPullRequest::VERSION = '0.0.3';
+  $App::GitHubPullRequest::VERSION = '0.0.4';
 }
 
 # ABSTRACT: Command-line tool to query GitHub pull requests
@@ -220,15 +220,15 @@ App::GitHubPullRequest - Command-line tool to query GitHub pull requests
 
 =head1 VERSION
 
-version 0.0.3
+version 0.0.4
 
 =head1 SYNOPSIS
 
-    $ pr
-    $ pr list closed # not shown by default
-    $ pr show 7      # also includes comments
-    $ pr patch 7     # can be piped to colordiff if you like colors
-    $ pr help
+    $ prq
+    $ prq list closed # not shown by default
+    $ prq show 7      # also includes comments
+    $ prq patch 7     # can be piped to colordiff if you like colors
+    $ prq help
 
 =head1 INSTALLATION
 
@@ -263,7 +263,7 @@ Shows the patch associated with the specified pull request number.
 =head2 run(@args)
 
 Calls any of the other listed public methods with specified arguments. This
-is usually called automatically when you invoke L<pr>.
+is usually called automatically when you invoke L<prq>.
 
 =head1 CAVEATS
 
@@ -281,7 +281,7 @@ have a remote that points to github.com for the tool to work.
 
 =item *
 
-L<pr>
+L<prq>
 
 =back
 

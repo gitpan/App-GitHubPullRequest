@@ -6,7 +6,7 @@ META.json
 META.yml
 Makefile.PL
 README
-bin/pr
+bin/prq
 dist.ini
 lib/App/GitHubPullRequest.pm
 t/author-critic.t
