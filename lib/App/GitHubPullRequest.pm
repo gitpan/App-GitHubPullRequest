@@ -4,7 +4,7 @@ use feature qw(say);
 
 package App::GitHubPullRequest;
 {
-  $App::GitHubPullRequest::VERSION = '0.0.2';
+  $App::GitHubPullRequest::VERSION = '0.0.3';
 }
 
 # ABSTRACT: Command-line tool to query GitHub pull requests
@@ -151,8 +151,8 @@ sub _find_github_remote {
     foreach my $line (@lines) {
         my ($remote, $url, $type) = split /\s+/, $line;
         next unless $type eq '(fetch)'; # only consider fetch remotes
-        next unless $url =~ m/github\.com:/; # only consider remotes to github
-        if ( $url =~ m/github.com:(.+)\.git$/ ) {
+        next unless $url =~ m/github\.com/; # only consider remotes to github
+        if ( $url =~ m{github.com[:/](.+)\.git$} ) {
             $repo = $1;
             last;
         }
@@ -220,7 +220,7 @@ App::GitHubPullRequest - Command-line tool to query GitHub pull requests
 
 =head1 VERSION
 
-version 0.0.2
+version 0.0.3
 
 =head1 SYNOPSIS
 
