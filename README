@@ -2,13 +2,16 @@ NAME
     App::GitHubPullRequest - Command-line tool to query GitHub pull requests
 
 VERSION
-    version 0.0.4
+    version 0.0.5
 
 SYNOPSIS
         $ prq
         $ prq list closed # not shown by default
         $ prq show 7      # also includes comments
         $ prq patch 7     # can be piped to colordiff if you like colors
+        $ prq close 7
+        $ prq open 7
+        $ prq comment 7 "This is good stuff!"
         $ prq help
 
 INSTALLATION
@@ -32,6 +35,15 @@ COMMANDS
 
   patch <number>
     Shows the patch associated with the specified pull request number.
+
+  close <number>
+    Closes the specified pull request number.
+
+  open <number>
+    Reopens the specified pull request number.
+
+  comment <number> <text>
+    Creates a comment on the specified pull request with the specified text.
 
 METHODS
   run(@args)

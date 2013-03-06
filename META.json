@@ -28,7 +28,6 @@
       },
       "runtime" : {
          "requires" : {
-            "Data::Dumper" : "0",
             "FindBin" : "0",
             "JSON" : "0",
             "feature" : "0",
@@ -45,6 +44,6 @@
          "web" : "http://github.com/robinsmidsrod/App-GitHubPullRequest"
       }
    },
-   "version" : "0.0.4"
+   "version" : "0.0.5"
 }
 
