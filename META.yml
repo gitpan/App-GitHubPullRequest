@@ -21,4 +21,4 @@ requires:
   warnings: 0
 resources:
   repository: git://github.com/robinsmidsrod/App-GitHubPullRequest.git
-version: 0.0.1
+version: 0.0.2
