@@ -1,0 +1,15 @@
+INSTALL
+LICENSE
+MANIFEST
+META.json
+META.yml
+Makefile.PL
+README
+bin/pr
+dist.ini
+lib/App/GitHubPullRequest.pm
+t/author-critic.t
+t/release-eol.t
+t/release-no-tabs.t
+t/release-pod-coverage.t
+t/release-pod-syntax.t

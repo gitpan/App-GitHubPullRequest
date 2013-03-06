@@ -1,0 +1,41 @@
+#!/usr/bin/env perl
+
+# ABSTRACT: Command-line tool to query GitHub pull requests
+# PODNAME: pr
+
+use strict;
+use warnings;
+
+use FindBin;
+use lib "$FindBin::Bin/../lib";
+
+use App::GitHubPullRequest;
+
+my $pr = App::GitHubPullRequest->new;
+my $rc = $pr->run(@ARGV);
+exit $rc;
+
+__END__
+
+=pod
+
+=head1 NAME
+
+pr - Command-line tool to query GitHub pull requests
+
+=head1 VERSION
+
+version 0.0.1
+
+=head1 AUTHOR
+
+Robin Smidsrød <robin@smidsrod.no>
+
+=head1 COPYRIGHT AND LICENSE
+
+This software is copyright (c) 2013 by Robin Smidsrød.
+
+This is free software; you can redistribute it and/or modify it under
+the same terms as the Perl 5 programming language system itself.
+
+=cut
