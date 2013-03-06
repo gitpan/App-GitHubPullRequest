@@ -4,7 +4,7 @@ use feature qw(say);
 
 package App::GitHubPullRequest;
 {
-  $App::GitHubPullRequest::VERSION = '0.0.5';
+  $App::GitHubPullRequest::VERSION = '0.0.6';
 }
 
 # ABSTRACT: Command-line tool to query GitHub pull requests
@@ -350,7 +350,7 @@ App::GitHubPullRequest - Command-line tool to query GitHub pull requests
 
 =head1 VERSION
 
-version 0.0.5
+version 0.0.6
 
 =head1 SYNOPSIS
 
