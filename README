@@ -2,23 +2,33 @@ NAME
     App::GitHubPullRequest - Command-line tool to query GitHub pull requests
 
 VERSION
-    version 0.0.6
+    version 0.1.0
 
 SYNOPSIS
         $ prq
         $ prq list closed # not shown by default
         $ prq show 7      # also includes comments
         $ prq patch 7     # can be piped to colordiff if you like colors
+        $ prq help
+
+        $ prq login       # Get access token for commands below
         $ prq close 7
         $ prq open 7
-        $ prq comment 7 "This is good stuff!"
-        $ prq help
+        $ prq comment 7 'This is good stuff!'
 
 INSTALLATION
     Install it by just typing in these few lines in your shell:
 
         $ curl -L http://cpanmin.us | perl - --self-upgrade
         $ cpanm App::GitHubPullRequest
+
+    The following external programs are required:
+
+    *   git(1)
+
+    *   curl(1)
+
+    *   stty(1)
 
 COMMANDS
   help
@@ -37,30 +47,67 @@ COMMANDS
     Shows the patch associated with the specified pull request number.
 
   close <number>
-    Closes the specified pull request number.
+    Closes the specified pull request number. Be aware, you can't close a
+    pull request that has already been merged. If you try to, you'll get an
+    obscure "Validation Failed" error message from the GitHub API.
 
   open <number>
-    Reopens the specified pull request number.
+    Reopens the specified pull request number. Be aware, you can't reopen a
+    pull request that has already been merged or closed by the repo owner.
+    If you try to, you'll get an obscure "Validation Failed" error message
+    from the GitHub API.
 
-  comment <number> <text>
+  comment <number> [<text>]
     Creates a comment on the specified pull request with the specified text.
+    If text is not specified, an editor will be opened for you to type in
+    the text.
+
+    If your "EDITOR" environment variable has been set, that editor is used
+    to edit the text. If it has not been set, it will try to use the
+    editor(1) external program. This is usually a symlink set up by your
+    operating system to the most recently installed text editor.
+
+  login [<user>] [<password>]
+    Logs you in to GitHub and creates a new access token used instead of
+    your password. If you don't specify either of the options, they are
+    looked up in your git config github section. If none of those are found,
+    you'll be prompted for them.
 
 METHODS
   run(@args)
     Calls any of the other listed public methods with specified arguments.
     This is usually called automatically when you invoke prq.
 
+DEBUGGING
+    Set the environment variable PRQ_DEBUG to a non-zero value to see more
+    details, like each API command being executed.
+
+    If you want to interact with another GitHub repo than the one in your
+    current directory, set the environment variable GITHUB_REPO to the name
+    of the repo in question. Example:
+
+        GITHUB_REPO=robinsmidsrod/App-GitHubPullRequest prq list
+
+    Be aware, that if that repo is a fork, the program will look for its
+    parent.
+
 CAVEATS
-    If you don't have "git config github.user" and "git config
-    github.password" set in your git config, it will use unauthenticated API
-    requests, which has a rate-limit of 60 requests. If you add your user +
-    password info it should allow 5000 requests before you hit the limit.
+    If you don't authenticate with GitHub using the login command, it will
+    use unauthenticated API requests where possible, which has a rate-limit
+    of 60 requests. If you login first it should allow 5000 requests before
+    you hit the limit.
 
     You must be standing in a directory that is a git dir and that directory
     must have a remote that points to github.com for the tool to work.
 
 SEE ALSO
     *   prq
+
+    *   GitHub Pull Request documentation
+        <https://help.github.com/articles/using-pull-requests>
+
+    *   GitHub Pull Request API documentation
+        <http://developer.github.com/v3/pulls/>
 
 SEMANTIC VERSIONING
     This module uses semantic versioning concepts from <http://semver.org/>.

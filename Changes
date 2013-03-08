@@ -1,5 +1,13 @@
 Revision history for App-GitHubPullRequest
 
+0.1.0     2013-03-08 15:30:53 Europe/Oslo
+    - Added login command
+    - Added comment editing with $EDITOR
+    - Removed some excessive API calls => faster execution
+    - Running external programs is now more robust
+    - Added API debugging option
+    - Improved documentation
+
 0.0.6     2013-03-06 19:28:09 Europe/Oslo
     - Fixed broken changelog
 
