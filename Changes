@@ -1,5 +1,11 @@
 Revision history for App-GitHubPullRequest
 
+0.2.0     2013-03-09 11:37:12 Europe/Oslo
+    - Added checkout command (PR#4)
+    - Fixed a bug where github URLs without .git extension
+      weren't recognized (PR#3)
+    - Made error checking when running external programs more robust
+
 0.1.0     2013-03-08 15:30:53 Europe/Oslo
     - Added login command
     - Added comment editing with $EDITOR
