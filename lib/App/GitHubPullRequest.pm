@@ -4,13 +4,14 @@ use feature qw(say);
 
 package App::GitHubPullRequest;
 {
-  $App::GitHubPullRequest::VERSION = '0.2.0';
+  $App::GitHubPullRequest::VERSION = '0.3.0';
 }
 
 # ABSTRACT: Command-line tool to query GitHub pull requests
 
 use JSON qw(decode_json encode_json);
 use Carp qw(croak);
+use Encode qw(encode_utf8);
 
 sub DEBUG;
 
@@ -62,8 +63,7 @@ sub list {
     }
     foreach my $pr ( @{ $prs->{"pull_requests"} } ) {
         my $number = $pr->{"number"};
-        my $title = $pr->{"title"};
-        my $body = $pr->{"body"};
+        my $title = encode_utf8( $pr->{"title"} );
         my $date = $pr->{"updated_at"} || $pr->{'created_at'};
         say join(" ", $number, $date, $title);
     }
@@ -79,8 +79,8 @@ sub show {
         unless defined $pr;
     {
         my $user = $pr->{'user'}->{'login'};
-        my $title = $pr->{"title"};
-        my $body = $pr->{"body"};
+        my $title = encode_utf8( $pr->{"title"} );
+        my $body = encode_utf8( $pr->{"body"} );
         my $date = $pr->{"updated_at"} || $pr->{'created_at'};
         say "Date:    $date";
         say "From:    $user";
@@ -92,7 +92,7 @@ sub show {
     foreach my $comment (@$comments) {
         my $user = $comment->{'user'}->{'login'};
         my $date = $comment->{'updated_at'} || $comment->{'created_at'};
-        my $body = $comment->{'body'};
+        my $body = encode_utf8( $comment->{'body'} );
         say "-" x 79;
         say "Date: $date";
         say "From: $user";
@@ -241,7 +241,7 @@ sub comment {
     my $comment = eval {
         decode_json( _post_url($url, $mimetype, $data) );
     };
-    die($@ . "Comment text saved in '$filename'. Please remove it manually.\n")
+    die($@ . ( defined $filename ? "Comment text saved in '$filename'. Please remove it manually." : "" ) ."\n")
         if $@; # most likely network error
     die("Unable to add comment on pull request $number.\n")
         unless defined $comment;
@@ -277,7 +277,7 @@ sub login {
     my $token = $auth->{'token'};
     die("Authentication data does not include a token.\n")
         unless $token;
-    my ($content, $rc) = _run_ext(qw(git config --global github.prq-token), $token);
+    my ($content, $rc) = _run_ext(qw(git config --global github.pr-token), $token);
     die("git config returned message '$content' and code $rc when trying to store your token.\n")
         if $rc != 0;
     say "Access token stored successfully. Go to https://github.com/settings/applications to revoke access.";
@@ -383,7 +383,7 @@ sub _tmpfile {
     srand($$ + time);
     my $random = $$;
     $random .= int(rand(10)) for 1..10;
-    return "/tmp/prq-$prefix$random";
+    return "/tmp/git-pr-$prefix$random";
 }
 
 # Return stdout from external program
@@ -436,7 +436,7 @@ sub _get_url {
     # See if we should use credentials
     my @credentials;
     if ( $url =~ m{^https://api.github.com/} ) {
-        my $token = _qx('git', 'config github.prq-token');
+        my $token = _qx('git', 'config github.pr-token');
         @credentials = ( '-H', "Authorization: token $token" ) if $token;
     }
 
@@ -468,7 +468,7 @@ sub _patch_url {
     # See if we should use credentials
     my @credentials;
     if ( $url =~ m{^https://api.github.com/} ) {
-        my $token = _qx('git', 'config github.prq-token');
+        my $token = _qx('git', 'config github.pr-token');
         die("You must login before you can modify information.\n")
             unless $token;
         @credentials = ( '-H', "Authorization: token $token" );
@@ -511,7 +511,7 @@ sub _post_url {
     # See if we should use credentials
     my @credentials;
     if ( $url =~ m{^https://api.github.com/} ) {
-        my $token = _qx('git', 'config github.prq-token');
+        my $token = _qx('git', 'config github.pr-token');
         die("You must login before you can modify information.\n")
             unless $token or ( $user and $password );
         if ( $user and $password ) {
@@ -557,21 +557,21 @@ App::GitHubPullRequest - Command-line tool to query GitHub pull requests
 
 =head1 VERSION
 
-version 0.2.0
+version 0.3.0
 
 =head1 SYNOPSIS
 
-    $ prq
-    $ prq list closed # not shown by default
-    $ prq show 7      # also includes comments
-    $ prq patch 7     # can be piped to colordiff if you like colors
-    $ prq checkout 7  # create upstream tracking branch pr/7
-    $ prq help
+    $ git pr
+    $ git pr list closed # not shown by default
+    $ git pr show 7      # also includes comments
+    $ git pr patch 7     # can be piped to colordiff if you like colors
+    $ git pr checkout 7  # create upstream tracking branch pr/7
+    $ git pr help
 
-    $ prq login       # Get access token for commands below
-    $ prq close 7
-    $ prq open 7
-    $ prq comment 7 'This is good stuff!'
+    $ git pr login       # Get access token for commands below
+    $ git pr close 7
+    $ git pr open 7
+    $ git pr comment 7 'This is good stuff!'
 
 =head1 INSTALLATION
 
@@ -660,7 +660,7 @@ prompted for them.
 =head2 run(@args)
 
 Calls any of the other listed public methods with specified arguments. This
-is usually called automatically when you invoke L<prq>.
+is usually called automatically when you invoke L<git-pr>.
 
 =head1 DEBUGGING
 
@@ -671,7 +671,7 @@ If you want to interact with another GitHub repo than the one in your
 current directory, set the environment variable GITHUB_REPO to the name of
 the repo in question. Example:
 
-    GITHUB_REPO=robinsmidsrod/App-GitHubPullRequest prq list
+    GITHUB_REPO=robinsmidsrod/App-GitHubPullRequest git pr list
 
 Be aware, that if that repo is a fork, the program will look for its parent.
 
@@ -691,7 +691,7 @@ have a remote that points to github.com for the tool to work.
 
 =item *
 
-L<prq>
+L<git-pr>
 
 =item *
 

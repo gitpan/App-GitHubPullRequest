@@ -17,19 +17,20 @@ my %WriteMakefileArgs = (
   },
   "DISTNAME" => "App-GitHubPullRequest",
   "EXE_FILES" => [
-    "bin/prq"
+    "bin/git-pr"
   ],
   "LICENSE" => "perl",
   "NAME" => "App::GitHubPullRequest",
   "PREREQ_PM" => {
     "Carp" => 0,
+    "Encode" => 0,
     "FindBin" => 0,
     "JSON" => 0,
     "feature" => 0,
     "strict" => 0,
     "warnings" => 0
   },
-  "VERSION" => "0.2.0",
+  "VERSION" => "0.3.0",
   "test" => {
     "TESTS" => "t/*.t"
   }

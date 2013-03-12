@@ -29,6 +29,7 @@
       "runtime" : {
          "requires" : {
             "Carp" : "0",
+            "Encode" : "0",
             "FindBin" : "0",
             "JSON" : "0",
             "feature" : "0",
@@ -45,6 +46,6 @@
          "web" : "http://github.com/robinsmidsrod/App-GitHubPullRequest"
       }
    },
-   "version" : "0.2.0"
+   "version" : "0.3.0"
 }
 
