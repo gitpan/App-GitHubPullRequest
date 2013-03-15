@@ -9,8 +9,10 @@ README
 bin/git-pr
 dist.ini
 lib/App/GitHubPullRequest.pm
+perlcritic.rc
 t/author-critic.t
 t/release-eol.t
+t/release-kwalitee.t
 t/release-no-tabs.t
 t/release-pod-coverage.t
 t/release-pod-syntax.t

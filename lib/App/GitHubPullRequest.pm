@@ -4,7 +4,7 @@ use feature qw(say);
 
 package App::GitHubPullRequest;
 {
-  $App::GitHubPullRequest::VERSION = '0.3.0';
+  $App::GitHubPullRequest::VERSION = '0.3.1';
 }
 
 # ABSTRACT: Command-line tool to query GitHub pull requests
@@ -14,6 +14,7 @@ use Carp qw(croak);
 use Encode qw(encode_utf8);
 
 sub DEBUG;
+
 
 sub new {
     my ($class) = @_;
@@ -187,7 +188,7 @@ sub checkout {
 }
 
 
-sub close {
+sub close { ## no critic (Subroutines::ProhibitBuiltinHomonyms)
     my ($self, $number) = @_;
     die("Please specify a pull request number.\n") unless $number;
     my $pr = $self->_state($number, 'closed');
@@ -198,7 +199,7 @@ sub close {
 }
 
 
-sub open {
+sub open { ## no critic (Subroutines::ProhibitBuiltinHomonyms)
     my ($self, $number) = @_;
     die("Please specify a pull request number.\n") unless $number;
     my $pr = $self->_state($number, 'open');
@@ -401,6 +402,7 @@ sub _qx {
 }
 
 # Run an external command and return STDOUT and exit code
+## no critic (Subroutines::RequireArgUnpacking)
 sub _run_ext {
     croak("Please specify a command line") unless @_;
     my $cmd = join(" ", @_);
@@ -413,6 +415,7 @@ sub _run_ext {
     my $rc = $? >> 8; # exit code, see perldoc perlvar for details
     return $stdout, $rc;
 }
+## use critic
 
 # Make sure a program is present in path
 sub _require_binary {
@@ -425,7 +428,7 @@ sub _require_binary {
 
 
 sub DEBUG {
-    return $ENV{'PRQ_DEBUG'} || 0;
+    return $ENV{'GIT_PR_DEBUG'} || 0;
 }
 
 # Perform HTTP GET
@@ -557,7 +560,7 @@ App::GitHubPullRequest - Command-line tool to query GitHub pull requests
 
 =head1 VERSION
 
-version 0.3.0
+version 0.3.1
 
 =head1 SYNOPSIS
 
@@ -657,15 +660,25 @@ prompted for them.
 
 =head1 METHODS
 
+=head2 new
+
+Constructor. Takes no parameters.
+
 =head2 run(@args)
 
 Calls any of the other listed public methods with specified arguments. This
 is usually called automatically when you invoke L<git-pr>.
 
-=head1 DEBUGGING
+=head1 FUNCTIONS
 
-Set the environment variable PRQ_DEBUG to a non-zero value to see more
+=head2 DEBUG
+
+Returns true if we're in debug mode.
+
+Set the environment variable GIT_PR_DEBUG to a non-zero value to see more
 details, like each API command being executed.
+
+=head1 DEBUGGING
 
 If you want to interact with another GitHub repo than the one in your
 current directory, set the environment variable GITHUB_REPO to the name of
